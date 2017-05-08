@@ -18,7 +18,8 @@ ui <- fluidPage(
     mainPanel(
       textOutput("number"),
       br(), br(),
-      tableOutput("table")
+      tableOutput("table"),
+      plotOutput("plot")
     )
   )
 )
@@ -26,7 +27,7 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-  
+  output$plot <- renderPlot(ggplot()  + annotation_raster(usa, -Inf, Inf, -Inf, Inf, interpolate = TRUE)  + geom_point(data=clean2015location, mapping=aes(x=longitude, y=latitude, color=factor(CAUSE_IGN) )) + coord_equal(ratio = 1) + ggtitle("2015 Residential Fire Fatalities")) 
   output$number <- renderText(results[as.numeric(input$year)-2005,as.numeric(input$column)])
   output$table <- renderTable(results)
   
